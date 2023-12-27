@@ -7,12 +7,11 @@ const c = canvas.getContext("2d");
 canvas.width = 1024
 canvas.height = 576
 
-
 // add eventlistener
 start_1v1.addEventListener("click", start1v1Game);
 
-
-
+const gravity = 0.7
+let lastkey
 const keys = {
     a: {
         pressed: false
@@ -33,11 +32,8 @@ const keys = {
         pressed: false
     }
 }
-let lastkey
-
 
 window.addEventListener("keydown", (e) => {
-    console.log(e.key);
     switch (e.key) {
         case "d":
             keys.d.pressed = true;
@@ -50,6 +46,10 @@ window.addEventListener("keydown", (e) => {
         case "w":
             player1.velocity.y = -20;
             break;
+        case " ":
+            player1.attack();
+            break;
+        // player 2 keys
         case "ArrowRight":
             keys.ArrowRight.pressed = true;
             player2.lastkey = "ArrowRight";
@@ -60,6 +60,9 @@ window.addEventListener("keydown", (e) => {
             break;
         case "ArrowUp":
             player2.velocity.y = -20;
+            break;
+        case "ArrowDown":
+            player2.attack();
             break;
         default:
             break;
@@ -89,33 +92,41 @@ window.addEventListener("keyup", (e) => {
     }
 })
 
-
-
-
-
-
-
-
-
-
-
-const gravity = 0.7
 class Sprite {
-    constructor({position, velocity, height}) {
+    constructor({position, velocity, color = "red", offset}) {
         this.position = position
         this.velocity = velocity
+        this.width = 50
         this.height = 150
         this.lastkey
         this.speed = 5
+        this.attackBox = {
+            position: {
+                x: this.position.x,
+                y: this.position.y
+            },
+            offset,
+            with: 100,
+            height: 50
+        }
+        this.color = color
+        this.isAttacking
     }
     draw() {
-        c.fillStyle = "red"
-        c.fillRect(this.position.x, this.position.y, 50, this.height)
+        // Player
+        c.fillStyle = this.color
+        c.fillRect(this.position.x, this.position.y, this.width, this.height)
+
+        // attackBox
+        if (this.isAttacking) {
+            c.fillStyle = "green"
+            c.fillRect(this.attackBox.position.x, this.attackBox.position.y, this.attackBox.with, this.attackBox.height)       
+        }
     }
     update() {
         this.draw()
-
-
+        this.attackBox.position.x = this.position.x + this.attackBox.offset.x
+        this.attackBox.position.y = this.position.y
 
         this.position.x += this.velocity.x;
         this.position.y += this.velocity.y;
@@ -125,7 +136,14 @@ class Sprite {
             this.velocity.y += gravity;            
         }
     }
+    attack(){
+        this.isAttacking = true
+        setTimeout(() => {
+            this.isAttacking = false
+        }, 100);
+    }
 }
+
 const player1 = new Sprite({
     position: {
         x: 0,
@@ -135,6 +153,10 @@ const player1 = new Sprite({
         x: 0,
         y: 10
     },
+    offset: {
+        x: 0,
+        y: 0
+    }
 })
 const player2 = new Sprite({
     position: {
@@ -144,8 +166,26 @@ const player2 = new Sprite({
     velocity: {
         x: 0,
         y: 1
-    }
+    },
+    offset: {
+        x: -50,
+        y: 0
+    },
+    color: "blue"
 })
+
+
+
+function rectangularCollision({ rectangle1, rectangle2 }) {
+    return (
+        rectangle1.attackBox.position.x + rectangle1.attackBox.with >= rectangle2.position.x && 
+        rectangle1.attackBox.position.x <= rectangle2.position.x + rectangle2.width &&
+        rectangle1.attackBox.position.y + rectangle1.attackBox.height >= rectangle2.position.y &&
+        rectangle1.attackBox.position.y <= rectangle2.position.y + rectangle2.height &&
+        rectangle1.isAttacking
+    )
+    
+}
 
 function animate() {
     window.requestAnimationFrame(animate)
@@ -167,6 +207,25 @@ function animate() {
     } else if (keys.ArrowRight.pressed && player2.lastkey === "ArrowRight") {
         player2.velocity.x = player2.speed;
     }
+
+    // detect for collision
+    if (
+        rectangularCollision({
+            rectangle1: player1,
+            rectangle2: player2
+    })) {
+        console.log("player")
+        player1.isAttacking = false
+    }
+    if (
+        rectangularCollision({
+            rectangle1: player2,
+            rectangle2: player1
+    })) {
+        console.log("enemy")
+        player2.isAttacking = false
+    }
+/////////////////////// rectangle1.isAttacking
 }
 
 function start1v1Game() {

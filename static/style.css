@@ -1,0 +1,37 @@
+*{
+    background-color: black;
+    color: aliceblue;
+    box-sizing: border-box;
+}
+@font-face {
+    font-family: "Ubuntu";
+    src: url(/static/fonts/Ubuntu/Ubuntu-Regular.ttf);
+}
+canvas{
+    display: none;
+    background-color: aliceblue;
+}
+body {
+    height: 100%;
+    width:  100%;
+    overflow: hidden;
+}
+.btn-play1v1 {
+    position: relative;
+    display: block;
+    
+    font-family: "Ubuntu";
+    font-size: 2rem;
+    background-color: rgb(46, 46, 46);
+    padding: 20px 80px;
+    border: none;
+    box-shadow: inset 0px 0px 0px 8px #504c40;
+    cursor: pointer;
+}
+.game-container{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

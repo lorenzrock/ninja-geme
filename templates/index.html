@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script defer src="{{ url_for('static', filename='script.js')}}"></script>
+    <title>Ninja - Game</title>
+</head>
+<body>
+    <div class="game-container">
+        <button class="btn-play1v1" id="btn-play1v1" >Play 1 vs. 1</button>
+        <canvas id="canvas"></canvas>
+    </div>
+</body>
+</html>

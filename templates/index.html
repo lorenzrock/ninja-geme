@@ -9,7 +9,21 @@
 </head>
 <body>
     <div class="game-container">
+        <div id="player_status" class="player-status">
+            <div class="health-bar-container">
+                <div id="player1_health" class="player1-health"></div>
+            </div>
+            <div class="game-time">
+                <span id="game_time">60</span>
+            </div>
+            <div class="health-bar-container">
+                <div id="player2_health" class="player2-health"></div>
+            </div>
+            
+
+        </div>
         <button class="btn-play1v1" id="btn-play1v1" >Play 1 vs. 1</button>
+        <div id="end-game-div" class="end-game-div"><button id="end-game-btn"></button></div>
         <canvas id="canvas"></canvas>
     </div>
 </body>

@@ -3,9 +3,20 @@
 var start_1v1 = document.getElementById("btn-play1v1");
 var canvas = document.getElementById("canvas");
 const c = canvas.getContext("2d");
+var player_status_bar = document.getElementById("player_status")
+
+// add game interface
+var player1_health = document.getElementById("player1_health")
+var player2_health = document.getElementById("player2_health")
+var game_time = document.getElementById("game_time")
+
+end_game_btn = document.getElementById("end-game-btn")
+end_game_div = document.getElementById("end-game-div")
 
 canvas.width = 1024
 canvas.height = 576
+let timerId
+
 
 // add eventlistener
 start_1v1.addEventListener("click", start1v1Game);
@@ -100,6 +111,7 @@ class Sprite {
         this.height = 150
         this.lastkey
         this.speed = 5
+        this.health = 100
         this.attackBox = {
             position: {
                 x: this.position.x,
@@ -214,19 +226,70 @@ function animate() {
             rectangle1: player1,
             rectangle2: player2
     })) {
-        console.log("player")
         player1.isAttacking = false
+        player2.health -= 10
+        player2_health.style.width = player2.health + "%"
     }
     if (
         rectangularCollision({
             rectangle1: player2,
             rectangle2: player1
     })) {
-        console.log("enemy")
         player2.isAttacking = false
+        player1.health -= 10
+        player1_health.style.width = player1.health + "%"
+    }
+    if (player1.health <= 0 || player2.health <= 0) {
+        determineWinner({player1, player2, timerId})   
     }
 /////////////////////// rectangle1.isAttacking
 }
+
+
+function determineWinner({player1, player2, timerId}) {
+    clearTimeout(timerId)
+
+    end_game_div.style.display = "flex"
+
+    if (player1.health === player2.health) {
+        end_game_btn.innerHTML = "Time out"
+    } else if (player1.health > player2.health) {
+        end_game_btn.innerHTML = "Playe 1 Wins"
+    } else if (player1.health < player2.health){
+        end_game_btn.innerHTML = "Playe 2 Wins"
+    }
+}
+
+
+
+let timer = 60
+
+function decreaseTimer() {
+    timerId = setTimeout(decreaseTimer, 1000)
+    if (timer > 0) {
+        timer--
+        game_time.innerHTML = timer
+    }
+    if (timer === 0) {
+        determineWinner({player1, player2, timerId})
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function start1v1Game() {
     if (start_1v1.style.display = "block") {
@@ -237,4 +300,6 @@ function start1v1Game() {
         canvas.style.display = "none";
     }
     animate();
+    player_status_bar.style.display = "flex";
+    decreaseTimer()
 }

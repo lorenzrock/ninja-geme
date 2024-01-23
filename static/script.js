@@ -20,6 +20,9 @@ let timerId
 
 // add eventlistener
 start_1v1.addEventListener("click", start1v1Game);
+end_game_btn.addEventListener("click", reset_game);
+
+
 
 const gravity = 0.7
 let lastkey
@@ -104,7 +107,7 @@ window.addEventListener("keyup", (e) => {
 })
 
 class Sprite {
-    constructor({position, velocity, color = "red", offset}) {
+    constructor({position, velocity, color = "red", offset, img}) {
         this.position = position
         this.velocity = velocity
         this.width = 50
@@ -123,12 +126,14 @@ class Sprite {
         }
         this.color = color
         this.isAttacking
+        this.img = img
+
     }
     draw() {
         // Player
         c.fillStyle = this.color
-        c.fillRect(this.position.x, this.position.y, this.width, this.height)
-
+        // c.fillRect(this.position.x, this.position.y, this.width, this.height)
+        c.drawImage(this.img, this.position.x, this.position.y, this.width, this.height)
         // attackBox
         if (this.isAttacking) {
             c.fillStyle = "green"
@@ -152,13 +157,13 @@ class Sprite {
         this.isAttacking = true
         setTimeout(() => {
             this.isAttacking = false
-        }, 100);
+        }, 500);  
     }
 }
 
 const player1 = new Sprite({
     position: {
-        x: 0,
+        x: 20,
         y: 0
     },
     velocity: {
@@ -168,12 +173,15 @@ const player1 = new Sprite({
     offset: {
         x: 0,
         y: 0
-    }
+    },
+    img: new Image()
+    
 })
+player1.img.src = "static/assets/ninja_green.png"
 const player2 = new Sprite({
     position: {
-        x: 400,
-        y: 100
+        x: 950,
+        y: 0
     },
     velocity: {
         x: 0,
@@ -183,10 +191,23 @@ const player2 = new Sprite({
         x: -50,
         y: 0
     },
-    color: "blue"
+    color: "blue",
+    img: new Image()
 })
-
-
+player2.img.src = "static/assets/pixilart-drawing (3).png"
+// Important change agording do player postion
+function settplyer2Offset() {
+    if (
+        player1.width/2 + player1.position.x > player2.position.x + player2.width/2
+        // denk dran wo x ist 
+    ) {
+        player1.attackBox.offset.x = -50
+        player2.attackBox.offset.x = 0
+    } else {
+        player1.attackBox.offset.x = 0
+        player2.attackBox.offset.x = -50
+    }
+}
 
 function rectangularCollision({ rectangle1, rectangle2 }) {
     return (
@@ -204,6 +225,8 @@ function animate() {
     c.clearRect(0,0,canvas.width,canvas.height)
     player1.update()
     player2.update()
+
+    settplyer2Offset()
 
     // player1 movement
     player1.velocity.x = 0;
@@ -286,7 +309,27 @@ function decreaseTimer() {
 
 
 
+function reset_game() {
+    player1.health = 100
+    player2.health = 100
 
+    player1.position.x = 20
+    player2.position.x = 950
+
+    player1.health = 100
+    player2.health = 100
+    player1_health.style.width = player1.health + "%"
+    player2_health.style.width = player2.health + "%"
+
+
+    timer = 60
+    timerId = setTimeout(decreaseTimer, 1000)
+    game_time.innerHTML = timer
+
+    end_game_div.style.display = "none"
+
+
+}
 
 
 

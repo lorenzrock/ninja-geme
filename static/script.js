@@ -16,7 +16,7 @@ end_game_div = document.getElementById("end-game-div")
 canvas.width = 1024
 canvas.height = 576
 let timerId
-
+let timer = 60
 
 // add eventlistener
 start_1v1.addEventListener("click", start1v1Game);
@@ -185,7 +185,7 @@ const player2 = new Sprite({
     },
     velocity: {
         x: 0,
-        y: 1
+        y: 10
     },
     offset: {
         x: -50,
@@ -263,15 +263,23 @@ function animate() {
         player1_health.style.width = player1.health + "%"
     }
     if (player1.health <= 0 || player2.health <= 0) {
+
+
+        player1.position.x = 20
+        player2.position.x = 950
+        player1.speed = 0
+        player2.speed = 0
+
         determineWinner({player1, player2, timerId})   
     }
 /////////////////////// rectangle1.isAttacking
 }
 
 
+
 function determineWinner({player1, player2, timerId}) {
     clearTimeout(timerId)
-
+    
     end_game_div.style.display = "flex"
 
     if (player1.health === player2.health) {
@@ -281,11 +289,20 @@ function determineWinner({player1, player2, timerId}) {
     } else if (player1.health < player2.health){
         end_game_btn.innerHTML = "Playe 2 Wins"
     }
+    
+    player1.health = 100
+    player2.health = 100
+    change_to_reset_btn()
+}
+
+function change_to_reset_btn() {
+    setTimeout(() => {
+        end_game_btn.innerHTML = "Restart"
+    }, 2000)
 }
 
 
 
-let timer = 60
 
 function decreaseTimer() {
     timerId = setTimeout(decreaseTimer, 1000)
@@ -301,23 +318,13 @@ function decreaseTimer() {
 
 
 
-
-
-
-
-
-
-
-
 function reset_game() {
-    player1.health = 100
-    player2.health = 100
+    
 
-    player1.position.x = 20
-    player2.position.x = 950
+    player1.speed = 5
+    player2.speed = 5
 
-    player1.health = 100
-    player2.health = 100
+
     player1_health.style.width = player1.health + "%"
     player2_health.style.width = player2.health + "%"
 
@@ -334,6 +341,48 @@ function reset_game() {
 
 
 
+
+
+
+
+function select_spirit() {
+    var player1_selected = false
+    var player2_selected = false
+
+    function set_selected_player() {
+        player1_selected
+    }
+    
+    
+    selected_player1 = document.getElementById("selected_player1")
+    selected_player2 = document.getElementById("selected_player2")
+
+    selected_player1.addEventListener("click", () => {
+        player2_selected = true
+    })
+    selected_player2.addEventListener("click", () => {
+        player1_selected = true
+    })
+
+
+    // if (player2_selected) {
+        // player1.img.src = spirits[img_id]
+    // }
+    // if (player2_selected) {
+        // player1.img.src = spirits[img_id]
+    // }
+
+
+
+
+    var player1_selected = false
+    var player2_selected = false
+}
+
+
+
+
+
 function start1v1Game() {
     if (start_1v1.style.display = "block") {
         start_1v1.style.display = "none";    
@@ -342,6 +391,10 @@ function start1v1Game() {
         start_1v1.style.display = "block";    
         canvas.style.display = "none";
     }
+    select_spirit()
+
+
+
     animate();
     player_status_bar.style.display = "flex";
     decreaseTimer()

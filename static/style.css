@@ -101,3 +101,9 @@ body {
     box-shadow: inset 0px 0px 0px 8px #504c40;
     cursor: pointer;
 }
+.player-selection{
+    display: block;
+}
+.player-selection img{
+    cursor: pointer;
+}

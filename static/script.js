@@ -28,6 +28,8 @@ end_game_btn.addEventListener("click", reset_game);
 
 
 
+
+
 spirit_src_list = ["/static/assets/ninja_green.png", "/static/assets/ninja_red.png", "/static/assets/badman.png", "/static/assets/spidy.png"]
 // 0 green ninja, 1 red ninja, 2 badman, 3 spidy
 
@@ -40,21 +42,25 @@ green_ninja_png_p1 = document.getElementById("green_ninja_png_p1")
 green_ninja_png_p1.addEventListener("click",() => {
     player1.img.src = spirit_src_list[0]
     console.log(player1_selected_spirit)
+    set_outline(green_ninja_png_p1)
 })
 red_ninja_png_p1 = document.getElementById("red_ninja_png_p1")
 red_ninja_png_p1.addEventListener("click",() => {
     player1.img.src = spirit_src_list[1]
     console.log(player1_selected_spirit)
+    set_outline(red_ninja_png_p1)
 })
 badman_ninja_png_p1 = document.getElementById("badman_ninja_png_p1")
 badman_ninja_png_p1.addEventListener("click",() => {
     player1.img.src = spirit_src_list[2]
     console.log(player1_selected_spirit)
+    set_outline(badman_ninja_png_p1)
 })
 spidy_png_p1 = document.getElementById("spidy_png_p1")
 spidy_png_p1.addEventListener("click",() => {
     player1.img.src = spirit_src_list[3]
     console.log(player1_selected_spirit)
+    set_outline(spidy_png_p1)
 })
 
 
@@ -62,21 +68,25 @@ green_ninja_png_p2 = document.getElementById("green_ninja_png_p2")
 green_ninja_png_p2.addEventListener("click",() => {
     player2.img.src = spirit_src_list[0]
     console.log(player2_selected_spirit)
+    set_outline(green_ninja_png_p2)
 })
 red_ninja_png_p2 = document.getElementById("red_ninja_png_p2")
 red_ninja_png_p2.addEventListener("click",() => {
     player2.img.src = spirit_src_list[1]
     console.log(player2_selected_spirit)
+    set_outline(red_ninja_png_p2)
 })
 badman_ninja_png_p2 = document.getElementById("badman_ninja_png_p2")
 badman_ninja_png_p2.addEventListener("click",() => {
     player2.img.src = spirit_src_list[2]
     console.log(player2_selected_spirit)
+    set_outline(badman_ninja_png_p2)
 })
 spidy_png_p2 = document.getElementById("spidy_png_p2")
 spidy_png_p2.addEventListener("click",() => {
     player2.img.src = spirit_src_list[3]
     console.log(player2_selected_spirit)
+    set_outline(spidy_png_p2)
 })
 
 
@@ -91,21 +101,25 @@ weapon_1_p1 = document.getElementById("weapon_1_p1")
 weapon_1_p1.addEventListener("click",() => {
     player1.weapon_img.src = weapon_src_list[0]
     console.log(weapon_src_list[0])
+    set_outline(weapon_1_p1)
 })
 weapon_2_p1 = document.getElementById("weapon_2_p1")
 weapon_2_p1.addEventListener("click",() => {
     player1.weapon_img.src = weapon_src_list[1]
     console.log(weapon_src_list[1])
+    set_outline(weapon_2_p1)
 })
 weapon_3_p1 = document.getElementById("weapon_3_p1")
 weapon_3_p1.addEventListener("click",() => {
     player1.weapon_img.src = weapon_src_list[2]
     console.log(weapon_src_list[2])
+    set_outline(weapon_3_p1)
 })
 weapon_4_p1 = document.getElementById("weapon_4_p1")
 weapon_4_p1.addEventListener("click",() => {
     player1.weapon_img.src = weapon_src_list[3]
     console.log(weapon_src_list[3])
+    set_outline(weapon_4_p1)
 })
 
 
@@ -114,27 +128,37 @@ weapon_1_p2 = document.getElementById("weapon_1_p2")
 weapon_1_p2.addEventListener("click",() => {
     player2.weapon_img.src = weapon_src_list[0]
     console.log(weapon_src_list[0])
+    set_outline(weapon_1_p2)
 })
 weapon_2_p2 = document.getElementById("weapon_2_p2")
 weapon_2_p2.addEventListener("click",() => {
     player2.weapon_img.src = weapon_src_list[1]
     console.log(weapon_src_list[1])
+    set_outline(weapon_2_p2)
 })
 weapon_3_p2 = document.getElementById("weapon_3_p2")
 weapon_3_p2.addEventListener("click",() => {
     player2.weapon_img.src = weapon_src_list[2]
     console.log(weapon_src_list[2])
+    set_outline(weapon_3_p2)
 })
 weapon_4_p2 = document.getElementById("weapon_4_p2")
 weapon_4_p2.addEventListener("click",() => {
     player2.weapon_img.src = weapon_src_list[3]
     console.log(weapon_src_list[3])
+    set_outline(weapon_4_p2)
 })
 
-
-
-
-
+function set_outline(image) {
+    if (image.style.outlineStyle == "solid") {
+        image.style.outlineStyle = "none"
+        image.style.outlineColor = "rgb(46, 46, 46)"
+    } else {
+        image.style.outlineStyle = "solid"
+        image.style.outlineColor = "rgb(46, 46, 46)"
+    }
+    
+}
 
 
 
@@ -246,13 +270,12 @@ class Sprite {
             },
             offset,
             with: 100,
-            height: 50
+            height: 100
         }
         this.color = color
         this.isAttacking
         this.img = img
         this.weapon_img = weapon_img
-
     }
     draw() {
         // Player
@@ -262,7 +285,7 @@ class Sprite {
         // attackBox
         if (this.isAttacking) {
             // c.fillStyle = "green"
-            // c.fillRect(this.attackBox.position.x, this.attackBox.position.y, this.attackBox.with, this.attackBox.height)       
+            // c.fillRect(this.attackBox.position.x, this.attackBox.position.y, this.attackBox.with, this.attackBox.height)
             c.drawImage(this.weapon_img, this.attackBox.position.x, this.attackBox.position.y, this.attackBox.with, this.attackBox.height)
         }
     }
@@ -332,9 +355,22 @@ function settplyer2Offset() { // this is for so the attackbox positions to face 
     ) {
         player1.attackBox.offset.x = -50
         player2.attackBox.offset.x = 0
+
+        mirrored_img_src = player1.weapon_img.src.slice(0,45) + "_mirrored.png"
+        player1.weapon_img.src = mirrored_img_src
+        
+        mirrored_img_src = player2.weapon_img.src.slice(0,45) + ".png"
+        player2.weapon_img.src = mirrored_img_src
+
     } else {
         player1.attackBox.offset.x = 0
         player2.attackBox.offset.x = -50
+
+        mirrored_img_src = player1.weapon_img.src.slice(0,45) + ".png"
+        player1.weapon_img.src = mirrored_img_src
+
+        mirrored_img_src = player2.weapon_img.src.slice(0,45) + "_mirrored.png"
+        player2.weapon_img.src = mirrored_img_src
     }
 }
 

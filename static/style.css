@@ -27,8 +27,9 @@ body {
     position: relative;
     display: block;
     
+    margin-top: 40px;
     font-family: "Ubuntu";
-    font-size: 2rem;
+    font-size: 1rem;
     background-color: rgb(46, 46, 46);
     padding: 20px 80px;
     border: none;
@@ -101,9 +102,33 @@ body {
     box-shadow: inset 0px 0px 0px 8px #504c40;
     cursor: pointer;
 }
-.player-selection{
-    display: block;
+.player-selection-flex{
+    display: flex;
+    gap: 20px;
 }
 .player-selection img{
     cursor: pointer;
+}
+
+
+
+.player-selection p{
+    font-family: "ubuntu";
+    background-color: #504c40;
+    padding: 5px 10px;
+    width: fit-content;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+.player-selection h1{
+    position: relative;
+    top: 0;
+    background-color: rgb(46, 46, 46);
+    font-family: "ubuntu";
+    padding: 8px 20px;
+    box-shadow: inset 0px 0px 0px 8px #504c40;
+}
+.player-selection h2{
+    font-family: "ubuntu";
+    margin-top: 20px;
 }
